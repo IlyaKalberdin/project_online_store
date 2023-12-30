@@ -33,14 +33,15 @@
 </nav>
 <h5 class="text-center my-5">Укажите ваши данные и мы с вами свяжемся</h5>
 <div class="container col-3">
-    <form>
+    <form method="post">
+        {% csrf_token %}
         <div class="mb-3">
             <label for="exampleNameInput" class="form-label">Имя</label>
-            <input type="text" id="exampleNameInput" class="form-control" placeholder="Введите ваше имя">
+            <input name="name" type="text" id="exampleNameInput" class="form-control" placeholder="Введите ваше имя">
         </div>
         <div class="mb-3">
             <label for="exampleNumberInput" class="form-label">Номер</label>
-            <input type="text" id="exampleNumberInput" class="form-control" placeholder="Введите ваш номер телефона">
+            <input name="number" type="text" id="exampleNumberInput" class="form-control" placeholder="Введите ваш номер телефона">
         </div>
         <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
