@@ -26,6 +26,7 @@ class Product(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=50, verbose_name='наименование')
     description = models.TextField(verbose_name='описание')
+    created_at = models.DateField(verbose_name='дата создания')
 
     def __str__(self):
         # Строковое отображение объекта
