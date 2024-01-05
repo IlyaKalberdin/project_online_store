@@ -1,13 +1,19 @@
 from django.shortcuts import render
+from catalog_app.models import Product
 
 
 def home_page(request):
-    # Функция возвращает страницу home_page.html
+    """Функция возвращает страницу home_page.html и выводит последние
+    5 товаров в консоль"""
+    last_five_product = Product.objects.all()[:5]
+
+    print(last_five_product)
+
     return render(request, 'catalog_app/home_page.html')
 
 
 def contact_page(request):
-    # Функция возвращает страницу contact_page.html
+    """Функция возвращает страницу contact_page.html"""
     if request.method == 'POST':
         name = request.POST.get('name')
         number = request.POST.get('number')
