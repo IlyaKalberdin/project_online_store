@@ -34,3 +34,16 @@ class Category(models.Model):
     class Meta:
         verbose_name = 'категория'
         verbose_name_plural = 'категории'
+
+
+class Contact(models.Model):
+    name = models.CharField(max_length=50, verbose_name='имя')
+    number = models.CharField(max_length=10, verbose_name='номер')
+
+    def __str__(self):
+        # Строковое отображение объекта
+        return f'{self.name} {self.number}'
+
+    class Meta:
+        verbose_name = 'контакты'
+        verbose_name_plural = 'контакты'
