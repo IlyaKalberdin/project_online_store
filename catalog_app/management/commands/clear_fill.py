@@ -1,29 +1,41 @@
-from django.core.management.utils import parse_apps_and_model_labels
-from django.core.management.commands.loaddata import Command as LoaddataCommand
-from django.db import transaction, connections
-from catalog_app.models import Category
+from json import load
+from django.core.management import BaseCommand
+from catalog_app.models import Category, Product
+from os.path import join
 
 
-class Command(LoaddataCommand):
-    """Класс-команда, работает так же как и loaddata только сначала удаляет все данные из БД"""
-    def handle(self, *fixture_labels, **options):
+class Command(BaseCommand):
+    """Удаляет все данные из БД и записывает новые"""
+
+    def handle(self, *args, **kwargs):
         Category.objects.all().delete()
 
-        self.ignore = options["ignore"]
-        self.using = options["database"]
-        self.app_label = options["app_label"]
-        self.verbosity = options["verbosity"]
-        self.excluded_models, self.excluded_apps = parse_apps_and_model_labels(
-            options["exclude"]
-        )
-        self.format = options["format"]
+        data = self.get_catalog_app_data(join('catalog_app_data.json'))
 
-        with transaction.atomic(using=self.using):
-            self.loaddata(fixture_labels)
+        category_list = []
+        product_list = []
 
-        # Close the DB connection -- unless we're still in a transaction. This
-        # is required as a workaround for an edge case in MySQL: if the same
-        # connection is used to create tables, load data, and query, the query
-        # can return incorrect results. See Django #7572, MySQL #37735.
-        if transaction.get_autocommit(self.using):
-            connections[self.using].close()
+        for d in data:
+            if 'category' in d['model']:
+                category_list.append(Category(id=d['pk'],
+                                              name=d['fields']['name'],
+                                              description=d['fields']['description']))
+            elif 'product' in d['model']:
+                product_list.append(Product(id=d['pk'],
+                                            name=d['fields']['name'],
+                                            description=d['fields']['description'],
+                                            image=d['fields']['image'],
+                                            category=category_list[d['fields']['category'] - 1],
+                                            price=d['fields']['price'],
+                                            creation_date=d['fields']['creation_date'],
+                                            last_modified_date=d['fields']['last_modified_date']))
+
+        Category.objects.bulk_create(category_list)
+        Product.objects.bulk_create(product_list)
+
+    @staticmethod
+    def get_catalog_app_data(path):
+        with open(path) as file:
+            data = load(file)
+
+        return data
