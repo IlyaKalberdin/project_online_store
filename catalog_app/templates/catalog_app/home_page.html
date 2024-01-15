@@ -11,7 +11,7 @@
                 <div class="card-body">
                     <h5 class="card-title">{{product.name}}</h5>
                     <p class="card-text">{{product.description}}</p>
-                    <a href="/product/{{product.id}}" class="card-link"> Подробнее</a>
+                    <a href="{% url 'catalog_app:product' product.id %}" class="card-link"> Подробнее</a>
                 </div>
                 <div class="card-footer">
                     <small class="text-muted">Последнее изменение {{product.last_modified_date}}</small>
