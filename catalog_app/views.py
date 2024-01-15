@@ -17,6 +17,13 @@ def home_page(request):
     return render(request, 'catalog_app/home_page.html', product_list)
 
 
+def product_page(request, product_id):
+    """Функция возвращает страницу product_page.html"""
+    product = {'product': Product.objects.filter(id=product_id)}
+
+    return render(request, 'catalog_app/product_page.html', product)
+
+
 def contact_page(request):
     """Функция возвращает страницу contact_page.html"""
     contact = {'contact': Contact.objects.filter(id=1)[0]}
