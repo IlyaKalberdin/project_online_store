@@ -19,6 +19,13 @@
             </div>
         </div>
         {% endfor %}
+        <div class="col">
+            <div class="card">
+                <div class="card-body">
+                    <a href="{% url 'catalog_app:create_product' %}" class="card-link">Добавить новый продукт</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 {% endblock %}

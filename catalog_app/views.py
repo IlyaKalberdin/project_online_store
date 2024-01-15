@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from catalog_app.models import Product, Contact
-
+from catalog_app.models import Product, Category, Contact
+from datetime import datetime
 
 def home_page(request):
     """Функция возвращает страницу home_page.html и выводит последние
@@ -41,3 +41,25 @@ def contact_page(request):
         print(f'{name}, {number}')
 
     return render(request, 'catalog_app/contact_page.html', context)
+
+
+def create_product_page(request):
+    """Функция возвращает страницу create_product_page.html"""
+    category_list = Category.objects.all()
+
+    context = {'categories': category_list,
+               'title': 'Создание продукта'}
+
+    if request.method == 'POST':
+        category_id = int(request.POST.get('category'))
+
+        category = category_list[category_id - 1]
+        name = request.POST.get('name')
+        price = int(request.POST.get('price'))
+        description = request.POST.get('description')
+        date_now = datetime.now().strftime('%Y-%m-%d')
+
+        Product.objects.create(category=category, name=name, price=price, description=description,
+                               creation_date=date_now, last_modified_date=date_now)
+
+    return render(request, 'catalog_app/create_product_page.html', context)
