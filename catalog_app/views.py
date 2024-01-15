@@ -9,24 +9,30 @@ def home_page(request):
 
     print(last_five_product)
 
-    product_list = {'products': Product.objects.all()}
+    context = {'products': Product.objects.all(),
+               'title': 'Главная'}
 
-    for product in product_list['products']:
+    for product in context['products']:
         product.description = product.description[:100]
 
-    return render(request, 'catalog_app/home_page.html', product_list)
+    return render(request, 'catalog_app/home_page.html', context)
 
 
 def product_page(request, product_id):
     """Функция возвращает страницу product_page.html"""
-    product = {'product': Product.objects.filter(id=product_id)}
+    product_list = Product.objects.filter(id=product_id)
+    page_name = product_list[0].name
 
-    return render(request, 'catalog_app/product_page.html', product)
+    context = {'product': product_list,
+               'title': page_name}
+
+    return render(request, 'catalog_app/product_page.html', context)
 
 
 def contact_page(request):
     """Функция возвращает страницу contact_page.html"""
-    contact = {'contact': Contact.objects.filter(id=1)[0]}
+    context = {'contact': Contact.objects.filter(id=1)[0],
+               'title': 'Контакты'}
 
     if request.method == 'POST':
         name = request.POST.get('name')
@@ -34,4 +40,4 @@ def contact_page(request):
 
         print(f'{name}, {number}')
 
-    return render(request, 'catalog_app/contact_page.html', contact)
+    return render(request, 'catalog_app/contact_page.html', context)
