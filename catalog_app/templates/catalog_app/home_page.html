@@ -1,28 +1,30 @@
 {% extends 'catalog_app/base.html' %}
 {% block content %}
-{% include 'catalog_app/includes/inc_menu.html'%}
-<div class="container">
-    <h1 class="text-center my-5">Наши товары</h1>
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        {% for product in products %}
-        <div class="col">
-            <div class="card">
-                <img src="..." class="card-img-top" alt="Изображение">
-                <div class="card-body">
-                    <h5 class="card-title">{{product.name}}</h5>
-                    <p class="card-text">{{product.description}}</p>
-                    <a href="{% url 'catalog_app:product' product.id %}" class="card-link"> Подробнее</a>
-                </div>
-                <div class="card-footer">
-                    <small class="text-muted">Последнее изменение {{product.last_modified_date}}</small>
+<div style="overflow-y: auto;">
+    {% include 'catalog_app/includes/inc_menu.html'%}
+    <div class="container">
+        <h1 class="text-center my-5">Наши товары</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for product in products %}
+            <div class="col">
+                <div class="card">
+                    <img src="..." class="card-img-top" alt="Изображение">
+                    <div class="card-body">
+                        <h5 class="card-title">{{product.name}}</h5>
+                        <p class="card-text">{{product.description}}</p>
+                        <a href="{% url 'catalog_app:product' product.id %}" class="card-link"> Подробнее</a>
+                    </div>
+                    <div class="card-footer">
+                        <small class="text-muted">Последнее изменение {{product.last_modified_date}}</small>
+                    </div>
                 </div>
             </div>
-        </div>
-        {% endfor %}
-        <div class="col">
-            <div class="card">
-                <div class="card-body">
-                    <a href="{% url 'catalog_app:create_product' %}" class="card-link">Добавить новый продукт</a>
+            {% endfor %}
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <a href="{% url 'catalog_app:create_product' %}" class="card-link">Добавить новый продукт</a>
+                    </div>
                 </div>
             </div>
         </div>
