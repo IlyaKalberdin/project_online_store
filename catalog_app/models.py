@@ -29,7 +29,7 @@ class Category(models.Model):
 
     def __str__(self):
         # Строковое отображение объекта
-        return f'{self.name} {self.description}'
+        return f'{self.name}'
 
     class Meta:
         verbose_name = 'категория'
