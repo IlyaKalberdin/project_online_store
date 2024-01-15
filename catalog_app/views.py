@@ -9,7 +9,12 @@ def home_page(request):
 
     print(last_five_product)
 
-    return render(request, 'catalog_app/home_page.html')
+    product_list = {'products': Product.objects.all()}
+
+    for product in product_list['products']:
+        product.description = product.description[:100]
+
+    return render(request, 'catalog_app/home_page.html', product_list)
 
 
 def contact_page(request):
