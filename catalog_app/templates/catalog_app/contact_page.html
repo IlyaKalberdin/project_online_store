@@ -1,36 +1,6 @@
-<!doctype html>
-<html lang="ru" xmlns="http://www.w3.org/1999/html">
-<head>
-    <!-- Обязательные метатеги -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-
-    <title>Контакты</title>
-</head>
-<body>
-<nav class="navbar navbar-expand navbar-dark bg-dark">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="#">Навигация</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Главная</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/contacts">Контакты</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html'%}
 <h5 class="text-center my-5">Укажите ваши данные и мы с вами свяжемся</h5>
 <div class="container col-3">
     <form method="post">
@@ -53,5 +23,4 @@
     <p class="lead">{{contact.name}}</p>
     <p>{{contact.number}}</p>
 </div>
-</body>
-</html>
+{% endblock %}
