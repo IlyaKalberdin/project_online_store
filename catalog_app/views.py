@@ -1,32 +1,43 @@
 from django.shortcuts import render
+from django.urls import reverse_lazy
 from catalog_app.models import Product, Category, Contact
+from django.views.generic import ListView, DetailView, CreateView
 from datetime import datetime
 
-def home_page(request):
-    """Функция возвращает страницу home_page.html и выводит последние
-    5 товаров в консоль"""
-    last_five_product = Product.objects.all()[:5]
 
-    print(last_five_product)
+class ProductCreateView(CreateView):
+    """Класс для создания продукта"""
+    model = Product
+    fields = ('name', 'description', 'category', 'price')
+    extra_context = {'title': 'Создание продукта',
+                     'categories': Category.objects.all()}
+    success_url = reverse_lazy('catalog_app:home')
 
-    context = {'products': Product.objects.all(),
-               'title': 'Главная'}
+    def form_valid(self, form):
+        if form.is_valid():
+            new_product = form.save(commit=False)
+            new_product.creation_date = datetime.now()
+            new_product.last_modified_date = datetime.now()
+            new_product.save()
 
-    for product in context['products']:
-        product.description = product.description[:100]
-
-    return render(request, 'catalog_app/home_page.html', context)
+        return super().form_valid(form)
 
 
-def product_page(request, product_id):
-    """Функция возвращает страницу product_page.html"""
-    product_list = Product.objects.filter(id=product_id)
-    page_name = product_list[0].name
+class ProductListView(ListView):
+    """Класс для отображения списка продуктов"""
+    model = Product
+    extra_context = {'title': 'Главная'}
 
-    context = {'product': product_list,
-               'title': page_name}
 
-    return render(request, 'catalog_app/product_page.html', context)
+class ProductDetailView(DetailView):
+    """Класс для отображения подробной информации о продукте"""
+    model = Product
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['title'] = self.object.name
+
+        return context_data
 
 
 def contact_page(request):
@@ -41,25 +52,3 @@ def contact_page(request):
         print(f'{name}, {number}')
 
     return render(request, 'catalog_app/contact_page.html', context)
-
-
-def create_product_page(request):
-    """Функция возвращает страницу create_product_page.html"""
-    category_list = Category.objects.all()
-
-    context = {'categories': category_list,
-               'title': 'Создание продукта'}
-
-    if request.method == 'POST':
-        category_id = int(request.POST.get('category'))
-
-        category = category_list[category_id - 1]
-        name = request.POST.get('name')
-        price = int(request.POST.get('price'))
-        description = request.POST.get('description')
-        date_now = datetime.now().strftime('%Y-%m-%d')
-
-        Product.objects.create(category=category, name=name, price=price, description=description,
-                               creation_date=date_now, last_modified_date=date_now)
-
-    return render(request, 'catalog_app/create_product_page.html', context)

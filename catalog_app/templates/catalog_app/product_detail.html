@@ -1,0 +1,16 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html'%}
+<div class="container">
+    <img src="{{object.image}}" class="img-fluid" alt="Изображение">
+    <div class="row text-center">
+        <h1 class="text-center my-3">{{object.name}}</h1>
+        <p style="font-size: 30px">Категория: {{object.category}}</p>
+        <p style="font-size: 30px">Цена: {{object.price}}</p>
+        <p style="font-size: 30px">Описание: {{object.description}}</p>
+        <p style="font-size: 30px">ID товара: {{object.id}}</p>
+        <p style="font-size: 30px">Дата создания: {{object.creation_date}}</p>
+        <p style="font-size: 30px">Дата последнего изменения: {{object.last_modified_date}}</p>
+    </div>
+</div>
+{% endblock %}

@@ -5,17 +5,17 @@
     <div class="container">
         <h1 class="text-center my-5">Наши товары</h1>
         <div class="row row-cols-1 row-cols-md-3 g-4">
-            {% for product in products %}
+            {% for object in object_list %}
             <div class="col">
                 <div class="card">
-                    <img src="..." class="card-img-top" alt="Изображение">
+                    <img src="{{object.image}}" class="card-img-top" alt="Изображение">
                     <div class="card-body">
-                        <h5 class="card-title">{{product.name}}</h5>
-                        <p class="card-text">{{product.description}}</p>
-                        <a href="{% url 'catalog_app:product' product.id %}" class="card-link"> Подробнее</a>
+                        <h5 class="card-title">{{object.name}}</h5>
+                        <p class="card-text">{{object.description}}</p>
+                        <a href="{% url 'catalog_app:product' object.id %}" class="card-link"> Подробнее</a>
                     </div>
                     <div class="card-footer">
-                        <small class="text-muted">Последнее изменение {{product.last_modified_date}}</small>
+                        <small class="text-muted">Последнее изменение {{object.last_modified_date}}</small>
                     </div>
                 </div>
             </div>
