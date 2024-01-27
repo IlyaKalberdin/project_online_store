@@ -1,0 +1,18 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html'%}
+<div class="container col-6 my-5">
+    <div class="row my-6">
+        <div class="card text-center">
+            <div class="card-body">
+                <p class="card-text">Вы действительно хотите удалить продукт: {{object.name}}?</p>
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Подтвердить</button>
+                    <a href="{% url 'catalog_app:product' object.id %}" type="button" class="btn btn-primary">Вернуться назад</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

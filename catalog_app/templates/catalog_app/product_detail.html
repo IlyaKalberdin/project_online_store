@@ -16,8 +16,8 @@
             <li class="list-group-item">Дата последнего изменения: {{object.last_modified_date}}</li>
         </ul>
         <div class="card-body">
-            <button type="button" class="btn btn-primary">Редактировать</button>
-            <button type="button" class="btn btn-danger">Удалить</button>
+            <a href="{% url 'catalog_app:update_product' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'catalog_app:delete_product' object.id %}" type="button" class="btn btn-danger">Удалить</a>
         </div>
     </div>
 </div>
