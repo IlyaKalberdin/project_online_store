@@ -7,7 +7,7 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 
 class BlogCreateView(CreateView):
     model = Blog
-    fields = ('title', 'text', 'image')
+    fields = ('title', 'text', 'image', 'is_published')
     extra_context = {'title': 'Создание статьи'}
     success_url = reverse_lazy('blog_app:blog_list')
 
