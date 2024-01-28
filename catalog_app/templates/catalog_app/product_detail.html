@@ -1,0 +1,24 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html'%}
+<div class="container col-6">
+    <div class="card">
+        <img src="{{object.image}}" class="card-img-top" alt="Изображение">
+        <div class="card-body">
+            <h1 class="card-title text-center">{{object.name}}</h1>
+            <p class="card-text" style="font-size: 30px">Категория: {{object.category}}</p>
+            <p style="font-size: 30px">Цена: {{object.price}}</p>
+            <p style="font-size: 30px">Описание: {{object.description}}</p>
+            <p style="font-size: 30px">ID товара: {{object.id}}</p>
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">Дата создания: {{object.creation_date}}</li>
+            <li class="list-group-item">Дата последнего изменения: {{object.last_modified_date}}</li>
+        </ul>
+        <div class="card-body">
+            <a href="{% url 'catalog_app:update_product' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'catalog_app:delete_product' object.id %}" type="button" class="btn btn-danger">Удалить</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
