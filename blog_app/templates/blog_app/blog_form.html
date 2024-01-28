@@ -1,0 +1,24 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html' %}
+<div class="container my-5 col-6">
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <input name="title" type="text" id="exampleTitleInput" class="form-control"
+                   placeholder="Заголовок статьи: {{object.title}}">
+        </div>
+        <div class="mb-3">
+            <textarea name="text" id="exampleTextInput" class="form-control" rows="5"
+                      placeholder="Содержимое статьи: {{object.text}}"></textarea>
+        </div>
+        <div class="form-file">
+            <label class="form-file-label" for="image">
+                <span class="form-file-text">Изображение для статьи</span>
+            </label>
+            <input name="image" type="file" class="form-file-input" id="image">
+        </div>
+        <button type="submit" class="btn btn-primary">Отправить</button>
+    </form>
+</div>
+{% endblock %}
