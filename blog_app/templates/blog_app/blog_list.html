@@ -15,6 +15,9 @@
                         <a href="{% url 'blog_app:blog_detail' object.id %}" class="card-link"> Подробнее</a>
                     </div>
                     <div class="card-footer">
+                        <small class="text-muted">Количество просмотров: {{object.count_views}}</small>
+                    </div>
+                    <div class="card-footer">
                         <small class="text-muted">Дата создания {{object.creation_date}}</small>
                     </div>
                 </div>
