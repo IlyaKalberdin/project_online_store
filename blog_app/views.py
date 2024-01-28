@@ -5,6 +5,9 @@ from blog_app.models import Blog
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 
+EMAIL_TO = ['ilyakalberdin@gmail.com']
+
+
 class BlogCreateView(CreateView):
     model = Blog
     fields = ('title', 'text', 'image', 'is_published')
@@ -52,6 +55,8 @@ class BlogDetailView(DetailView):
         self.object = super().get_object(queryset)
         self.object.count_views += 1
         self.object.save()
+
+        self.object.send_letter(EMAIL_TO)
 
         return self.object
 
