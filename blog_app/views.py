@@ -15,7 +15,7 @@ class BlogCreateView(CreateView):
         new_blog = form.save(commit=False)
         new_blog.slug = slugify(new_blog.title)
         new_blog.save()
-        
+
         return super().form_valid(form)
 
 
@@ -36,6 +36,9 @@ class BlogUpdateView(UpdateView):
 class BlogListView(ListView):
     model = Blog
     extra_context = {'title': 'Блог'}
+
+    def get_queryset(self):
+        return self.model.objects.filter(is_published=True)
 
 
 class BlogDetailView(DetailView):
