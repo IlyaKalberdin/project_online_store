@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
+from catalog_app.forms import ProductForm
 from catalog_app.models import Product, Category, Contact
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
@@ -8,7 +9,7 @@ from datetime import datetime
 class ProductCreateView(CreateView):
     """Класс для создания продукта"""
     model = Product
-    fields = ('name', 'description', 'category', 'price')
+    form_class = ProductForm
     extra_context = {'title': 'Создание продукта',
                      'categories': Category.objects.all()}
     success_url = reverse_lazy('catalog_app:home')
@@ -25,7 +26,7 @@ class ProductCreateView(CreateView):
 class ProductUpdateView(UpdateView):
     """Класс для редактирование продукта"""
     model = Product
-    fields = ('name', 'description', 'category', 'price')
+    form_class = ProductForm
     extra_context = {'title': 'Редактирование продукта',
                      'categories': Category.objects.all()}
     success_url = reverse_lazy('catalog_app:home')
