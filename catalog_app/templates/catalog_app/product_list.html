@@ -14,6 +14,17 @@
                         <p class="card-text">{{object.description}}</p>
                         <a href="{% url 'catalog_app:product' object.id %}" class="card-link"> Подробнее</a>
                     </div>
+                    {% for version in versions %}
+                    {% if version.product == object %}
+                    <div class="card-footer">
+                        <small class="text-muted">Текущая версия {{ version }}</small>
+                    </div>
+                    {% else %}
+                    <div class="card-footer">
+                        <small class="text-muted">У продукта нет версий </small>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
                     <div class="card-footer">
                         <small class="text-muted">Последнее изменение {{object.last_modified_date}}</small>
                     </div>

@@ -56,7 +56,7 @@ class Version(models.Model):
     is_current_version = models.BooleanField(default=True, verbose_name='это текущая версия')
 
     def __str__(self):
-        return f'{self.name} №{self.number}'
+        return f'№{self.number}({self.name})'
 
     class Meta:
         verbose_name = 'версия'

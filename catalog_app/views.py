@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.urls import reverse_lazy
 from catalog_app.forms import ProductForm
-from catalog_app.models import Product, Category, Contact
+from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 
@@ -44,6 +44,12 @@ class ProductListView(ListView):
     """Класс для отображения списка продуктов"""
     model = Product
     extra_context = {'title': 'Главная'}
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['versions'] = Version.objects.filter(is_current_version=True)
+
+        return context_data
 
 
 class ProductDetailView(DetailView):
