@@ -1,6 +1,7 @@
+from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from catalog_app.forms import ProductForm
+from catalog_app.forms import ProductForm, VersionForm
 from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
@@ -24,18 +25,35 @@ class ProductCreateView(CreateView):
 
 
 class ProductUpdateView(UpdateView):
-    """Класс для редактирование продукта"""
+    """Класс для редактирования продукта"""
     model = Product
     form_class = ProductForm
     extra_context = {'title': 'Редактирование продукта',
                      'categories': Category.objects.all()}
     success_url = reverse_lazy('catalog_app:home')
 
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        VersionFormset = inlineformset_factory(Product, Version, form=VersionForm, extra=1)
+
+        if self.request.method == 'POST':
+            context_data['formset'] = VersionFormset(self.request.POST, instance=self.object)
+        else:
+            context_data['formset'] = VersionFormset(instance=self.object)
+
+        return context_data
+
     def form_valid(self, form):
         update_product = form.save(commit=False)
         update_product.last_modified_date = datetime.now()
 
         update_product.save()
+
+        # Обработка формсета
+        formset = self.get_context_data()['formset']
+
+        if formset.is_valid():
+            formset.save()
 
         return super().form_valid(form)
 

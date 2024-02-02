@@ -1,5 +1,5 @@
 from django import forms
-from catalog_app.models import Product
+from catalog_app.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
@@ -53,3 +53,19 @@ class ProductForm(forms.ModelForm):
         string_exception_words = exception_words.intersection(string_set)
 
         return string_exception_words
+
+
+class VersionForm(forms.ModelForm):
+
+    class Meta:
+        model = Version
+        fields = '__all__'
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+        for field_name, field in self.fields.items():
+            if field_name == 'is_current_version':
+                field.widget.attrs['class'] = 'form-check-input'
+            else:
+                field.widget.attrs['class'] = 'form-control'
