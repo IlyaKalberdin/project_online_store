@@ -1,27 +1,28 @@
 {% extends 'catalog_app/base.html' %}
 {% block content %}
 {% include 'catalog_app/includes/inc_menu.html' %}
-<div class="container my-5 col-6">
-    <form method="post">
+<div class="container my-5 col-10">
+    <form class="row" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="mb-3">
-            <select name="category" class="form-select" aria-label="Default select example">
-                <option selected>Категория: {{object.category}}</option>
-                {% for category in categories %}
-                <option value="{{category.id}}">{{category.name}}</option>
-                {% endfor %}
-            </select>
+        <div class="col-5">
+            <div class="card">
+                <div class="card-body">
+                    {{ formset.non_form_errors }}
+                    {{ form.as_p }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Отправить</button>
         </div>
-        <div class="mb-3">
-            <input name="name" type="text" id="exampleNameInput" class="form-control" placeholder="Название продукта: {{object.name}}">
+        <div class="col-5">
+            {{ formset.management_form }}
+            {% for form in formset.forms %}
+            <div class="card">
+                <div class="card-body">
+                    {{ form.as_p }}
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <div class="mb-3">
-            <input name="price" type="text" id="examplePriceInput" class="form-control" placeholder="Цена за штуку: {{object.price}}">
-        </div>
-        <div class="mb-3">
-            <textarea name="description" id="exampleDescriptionInput" class="form-control" rows="5" placeholder="Описание продукта: {{object.description}}"></textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Отправить</button>
     </form>
 </div>
 {% endblock %}

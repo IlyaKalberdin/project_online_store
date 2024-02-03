@@ -3,7 +3,7 @@
 {% include 'catalog_app/includes/inc_menu.html'%}
 <div class="container col-6">
     <div class="card">
-        <img src="{{object.image}}" class="card-img-top" alt="Изображение">
+        <img src="/media/{{object.image}}" class="card-img-top" alt="Изображение">
         <div class="card-body">
             <h1 class="card-title text-center">{{object.name}}</h1>
             <p class="card-text" style="font-size: 30px">Категория: {{object.category}}</p>
@@ -12,6 +12,7 @@
             <p style="font-size: 30px">ID товара: {{object.id}}</p>
         </div>
         <ul class="list-group list-group-flush">
+            <li class="list-group-item">Текущая версия: {{version.0}}</li>
             <li class="list-group-item">Дата создания: {{object.creation_date}}</li>
             <li class="list-group-item">Дата последнего изменения: {{object.last_modified_date}}</li>
         </ul>
