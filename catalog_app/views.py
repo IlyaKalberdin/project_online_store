@@ -13,7 +13,6 @@ class ProductCreateView(CreateView):
     form_class = ProductForm
     extra_context = {'title': 'Создание продукта',
                      'categories': Category.objects.all()}
-    success_url = reverse_lazy('catalog_app:home')
 
     def form_valid(self, form):
         new_product = form.save(commit=False)
@@ -30,7 +29,6 @@ class ProductUpdateView(UpdateView):
     form_class = ProductForm
     extra_context = {'title': 'Редактирование продукта',
                      'categories': Category.objects.all()}
-    success_url = reverse_lazy('catalog_app:home')
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)

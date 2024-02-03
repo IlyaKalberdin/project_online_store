@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 
 
 NULLABLE = {'blank': True, 'null': True}
@@ -17,6 +18,9 @@ class Product(models.Model):
         # Строковое отображение объекта
         return (f'{self.name} {self.category} {self.price} '
                 f'{self.creation_date} {self.last_modified_date} {self.description}')
+
+    def get_absolute_url(self):
+        return reverse('catalog_app:product', kwargs={'pk': self.id})
 
     class Meta:
         verbose_name = 'продукт'
