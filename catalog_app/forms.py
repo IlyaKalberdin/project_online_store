@@ -69,3 +69,18 @@ class VersionForm(forms.ModelForm):
                 field.widget.attrs['class'] = 'form-check-input'
             else:
                 field.widget.attrs['class'] = 'form-control'
+
+
+class VersionFormSet(forms.BaseInlineFormSet):
+
+    def clean(self):
+        cleaned_forms = self.cleaned_data
+
+        list_true = []
+        for cleaned_form in cleaned_forms:
+            list_true.append(cleaned_form.get('is_current_version'))
+
+        if list_true.count(True) > 1:
+            raise forms.ValidationError('Продукт может иметь только одну текущую версию.')
+
+        super().clean()
