@@ -42,6 +42,7 @@ INSTALLED_APPS = [
 
     'catalog_app',
     'blog_app',
+    'users_app',
 ]
 
 MIDDLEWARE = [
@@ -135,6 +136,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
+
+# Настройки пользователя
+
+AUTH_USER_MODEL = 'users_app.User'
 
 # Настройки для электронной почты
 
