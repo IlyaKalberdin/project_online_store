@@ -16,6 +16,30 @@
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{% url 'catalog_app:contacts' %}">Контакты</a>
                 </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                       data-toggle="dropdown" aria-expanded="false">
+                        {{ user }}
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <form method="post" action="{% url 'users_app:logout' %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-light">Выйти</button>
+                            </form>
+                        </li>
+                    </ul>
+                </li>
+                {% else %}
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{% url 'users_app:login' %}">Войти</a>
+                </li>
+                {% endif %}
             </ul>
         </div>
     </div>
