@@ -140,6 +140,8 @@ MEDIA_ROOT = BASE_DIR / 'media'
 # Настройки пользователя
 
 AUTH_USER_MODEL = 'users_app.User'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_REDIRECT_URL = '/'
 
 # Настройки для электронной почты
 
