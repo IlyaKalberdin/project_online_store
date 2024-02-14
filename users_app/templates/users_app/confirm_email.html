@@ -1,0 +1,21 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'catalog_app/includes/inc_menu.html' %}
+<div class="container my-5 col-10">
+    <form class="row" method="post">
+        {% csrf_token %}
+        <div class="col-4 offset-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Подтверждение почты</h3>
+                </div>
+                <div class="card-body">
+                    <label for="InputCode" class="form-label">Введите код из письма, направленного на {{user.0.email}}</label>
+                    <input class="form-label" id="InputCode" name="code">
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Подтвердить</button>
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -7,6 +7,7 @@ class User(AbstractUser):
     username = None
 
     email = models.EmailField(verbose_name='почта', unique=True)
+    is_confirmed_email = models.BooleanField(default=False, verbose_name='почта подтверждена')
 
     avatar = models.ImageField(verbose_name='аватар', **NULLABLE)
     number = models.CharField(max_length=50, verbose_name='номер телефона', **NULLABLE)
@@ -18,3 +19,4 @@ class User(AbstractUser):
     class Meta:
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
+
