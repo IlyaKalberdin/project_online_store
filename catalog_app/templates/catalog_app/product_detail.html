@@ -15,11 +15,14 @@
             <li class="list-group-item">Текущая версия: {{version.0}}</li>
             <li class="list-group-item">Дата создания: {{object.creation_date}}</li>
             <li class="list-group-item">Дата последнего изменения: {{object.last_modified_date}}</li>
+            <li class="list-group-item">Автор: {{object.author}}</li>
         </ul>
+        {% if user == object.author %}
         <div class="card-body">
             <a href="{% url 'catalog_app:update_product' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
             <a href="{% url 'catalog_app:delete_product' object.id %}" type="button" class="btn btn-danger">Удалить</a>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}

@@ -1,6 +1,8 @@
 from django.contrib.auth.models import AbstractUser
 from django.db import models
-from catalog_app.models import NULLABLE
+
+
+NULLABLE = {'blank': True, 'null': True}
 
 
 class User(AbstractUser):
@@ -20,3 +22,5 @@ class User(AbstractUser):
         verbose_name = 'пользователь'
         verbose_name_plural = 'пользователи'
 
+    def __str__(self):
+        return f'{self.first_name} {self.last_name}'

@@ -6,6 +6,8 @@ from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 
+from users_app.models import User
+
 
 class ProductCreateView(CreateView):
     """Класс для создания продукта"""
@@ -18,6 +20,7 @@ class ProductCreateView(CreateView):
         new_product = form.save(commit=False)
         new_product.creation_date = datetime.now()
         new_product.last_modified_date = datetime.now()
+        new_product.author = self.request.user
         new_product.save()
 
         return super().form_valid(form)
@@ -77,7 +80,7 @@ class ProductDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['title'] = self.object.name
-        context_data['version'] = Version.objects.filter(product= self.object, is_current_version=True)
+        context_data['version'] = Version.objects.filter(product=self.object, is_current_version=True)
 
         return context_data
 
