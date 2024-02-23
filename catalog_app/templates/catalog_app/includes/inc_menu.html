@@ -23,7 +23,7 @@
                         {{ user }}
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                        <li><a class="dropdown-item" href="#">Профиль</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users_app:update' user.id %}">Профиль</a></li>
                         <li>
                             <hr class="dropdown-divider">
                         </li>

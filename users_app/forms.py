@@ -1,4 +1,4 @@
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth import password_validation
 from django import forms
 from users_app.models import User
@@ -10,6 +10,13 @@ class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ('email', 'password1', 'password2')
+
+
+class UserUpdateForm(forms.ModelForm):
+
+    class Meta:
+        model = User
+        fields = ('email', 'number', 'country', 'avatar')
 
 
 class UserResetPasswordEnter(forms.Form):

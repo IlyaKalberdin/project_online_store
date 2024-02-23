@@ -3,7 +3,8 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, FormView, UpdateView
 from config.settings import EMAIL_HOST_USER
-from users_app.forms import UserRegistrationForm, UserResetPasswordEnter, UserResetPasswordConfirm, UserResetPasswordUpdate
+from users_app.forms import (UserRegistrationForm, UserResetPasswordEnter, UserResetPasswordConfirm,
+                             UserResetPasswordUpdate, UserUpdateForm)
 from users_app.models import User
 from random import randint
 from django import forms
@@ -33,6 +34,20 @@ class RegistrationView(CreateView):
         self.request.session['code'] = code
 
         return redirect('users_app:confirm_email', user)
+
+
+class UserUpdateView(UpdateView):
+    """
+    Контроллер для редактирования профиля пользователя
+    """
+    model = User
+    form_class = UserUpdateForm
+    extra_context = {'title': 'Редактирование профиля'}
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        self.success_url = reverse_lazy('users_app:update', kwargs={'pk': obj.id})
+        return obj
 
 
 class ResetPasswordEnter(FormView):
