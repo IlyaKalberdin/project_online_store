@@ -1,0 +1,193 @@
+[
+{
+    "model": "catalog_app.product",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфон Inpinix Cold",
+        "description": "Уверенно работает весь день!",
+        "image": "",
+        "category": 1,
+        "price": 7000,
+        "creation_date": "2023-01-03",
+        "last_modified_date": "2024-02-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 2,
+    "fields": {
+        "name": "Смарт-часы Big Watch 10",
+        "description": "Достойный функциональный помощник в маленьком устройстве!",
+        "image": "",
+        "category": 2,
+        "price": 2500,
+        "creation_date": "2023-01-03",
+        "last_modified_date": "2023-01-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 3,
+    "fields": {
+        "name": "Смарт-часы Premium 124XR Pro",
+        "description": "Идеальный выбор для всех, независимо от вашего пола",
+        "image": "",
+        "category": 2,
+        "price": 3000,
+        "creation_date": "2023-01-03",
+        "last_modified_date": "2023-01-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 4,
+    "fields": {
+        "name": "Наушники Loco GA 4242",
+        "description": "Безупречное звучание!",
+        "image": "",
+        "category": 3,
+        "price": 1200,
+        "creation_date": "2023-01-03",
+        "last_modified_date": "2023-01-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 5,
+    "fields": {
+        "name": "Наушники HRE PRO M500",
+        "description": "Надежные спортивные наушники",
+        "image": "",
+        "category": 3,
+        "price": 1700,
+        "creation_date": "2023-01-03",
+        "last_modified_date": "2023-01-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 41,
+    "fields": {
+        "name": "Смартфон",
+        "description": "Смартфон",
+        "image": "",
+        "category": 1,
+        "price": 10000,
+        "creation_date": "2024-02-01",
+        "last_modified_date": "2024-02-02",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.product",
+    "pk": 42,
+    "fields": {
+        "name": "Наушники",
+        "description": "Наушники комфорт",
+        "image": "",
+        "category": 3,
+        "price": 4000,
+        "creation_date": "2024-02-03",
+        "last_modified_date": "2024-02-03",
+        "author": 1
+    }
+},
+{
+    "model": "catalog_app.category",
+    "pk": 1,
+    "fields": {
+        "name": "Смартфон",
+        "description": "Портативное компьютерное устройство с функциональностью мобильного телефона"
+    }
+},
+{
+    "model": "catalog_app.category",
+    "pk": 2,
+    "fields": {
+        "name": "Смарт-часы",
+        "description": "Компьютезированные наручные часы с расширенной функциональностью"
+    }
+},
+{
+    "model": "catalog_app.category",
+    "pk": 3,
+    "fields": {
+        "name": "Наушники",
+        "description": "Устройство для прослушивания звуковой информации"
+    }
+},
+{
+    "model": "catalog_app.category",
+    "pk": 4,
+    "fields": {
+        "name": "Ноутбук",
+        "description": "Электронное устройство"
+    }
+},
+{
+    "model": "catalog_app.contact",
+    "pk": 1,
+    "fields": {
+        "name": "Илья",
+        "number": "8888888888"
+    }
+},
+{
+    "model": "catalog_app.version",
+    "pk": 1,
+    "fields": {
+        "product": 1,
+        "number": 1,
+        "name": "Золотой смартфон",
+        "is_current_version": false
+    }
+},
+{
+    "model": "catalog_app.version",
+    "pk": 4,
+    "fields": {
+        "product": 41,
+        "number": 1,
+        "name": "Розовый смартфон",
+        "is_current_version": true
+    }
+},
+{
+    "model": "catalog_app.version",
+    "pk": 16,
+    "fields": {
+        "product": 1,
+        "number": 2,
+        "name": "Серебряный смартфон",
+        "is_current_version": false
+    }
+},
+{
+    "model": "catalog_app.version",
+    "pk": 17,
+    "fields": {
+        "product": 1,
+        "number": 3,
+        "name": "Платиновый смартфон",
+        "is_current_version": true
+    }
+},
+{
+    "model": "blog_app.blog",
+    "pk": 11,
+    "fields": {
+        "title": "Про горы",
+        "slug": "pro-goryi",
+        "text": "Очень красивые Альпийские горы. Прям топ!!!! Горы супер!!!!!!!!!!!!!ТОППП",
+        "image": "blog_image/горы.jpeg",
+        "creation_date": "2024-01-28",
+        "is_published": true,
+        "count_views": 128
+    }
+}
+]

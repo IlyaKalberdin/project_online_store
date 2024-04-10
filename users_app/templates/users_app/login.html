@@ -1,0 +1,25 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+{% include 'users_app/includes/inc_menu_user.html' %}
+<div class="container my-5 col-10">
+    <form class="row" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="col-4 offset-md-4">
+            <div class="card">
+                <div class="card-header">
+                    <h3 class="card-title">Вход</h3>
+                </div>
+                <div class="card-body">
+                    {{ form.as_p }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Войти</button>
+            <a class="btn btn-danger" aria-current="page" href="{% url 'users_app:reset_password_enter' %}">Забыл пароль</a>
+            <div class="text-center">
+                <p>Все еще не зарегистрированы?</p>
+                <a aria-current="page" href="{% url 'users_app:registration' %}">Зарегистрироваться</a>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}

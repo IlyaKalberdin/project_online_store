@@ -21,7 +21,7 @@ class ProductForm(forms.ModelForm):
 
         if name_exception_words:
             name_exception_words = ', '.join(name_exception_words)
-            raise forms.ValidationError(f'Нельзя использовать следущие слова: {name_exception_words}')
+            raise forms.ValidationError(f'Нельзя использовать следующие слова: {name_exception_words}')
 
         return cleaned_name
 

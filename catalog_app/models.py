@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from users_app.models import User
 
 
 NULLABLE = {'blank': True, 'null': True}
@@ -13,6 +14,7 @@ class Product(models.Model):
     price = models.IntegerField(verbose_name='цена за штуку')
     creation_date = models.DateField(verbose_name='дата создания')
     last_modified_date = models.DateField(verbose_name='дата последнего изменения')
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='автор')
 
     def __str__(self):
         # Строковое отображение объекта
