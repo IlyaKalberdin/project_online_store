@@ -1,7 +1,8 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from catalog_app.forms import ProductForm, VersionForm, VersionFormSet
+from catalog_app.forms import ProductForm, VersionForm, VersionFormSet, ModeratorProductForm
 from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
@@ -57,6 +58,24 @@ class ProductUpdateView(UpdateView):
             formset.save()
         else:
             return self.render_to_response(self.get_context_data(form=form))
+
+        return super().form_valid(form)
+
+
+class ModeratorProductUpdateView(PermissionRequiredMixin, UpdateView):
+    """Класс для редактирования продукта модератором"""
+    model = Product
+    form_class = ModeratorProductForm
+    extra_context = {'title': 'Редактирование продукта',
+                     'categories': Category.objects.all()}
+    permission_required = ('catalog_app.cancel_published', 'catalog_app.change_description',
+                           'catalog_app.change_category')
+
+    def form_valid(self, form):
+        update_product = form.save(commit=False)
+        update_product.last_modified_date = datetime.now()
+
+        update_product.save()
 
         return super().form_valid(form)
 

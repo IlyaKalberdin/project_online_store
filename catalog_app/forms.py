@@ -58,6 +58,14 @@ class ProductForm(forms.ModelForm):
         return string_exception_words
 
 
+class ModeratorProductForm(ProductForm):
+    """Форма для редактирования продукта модераторами"""
+
+    class Meta:
+        model = Product
+        fields = ('category', 'description', 'is_published')
+
+
 class VersionForm(forms.ModelForm):
 
     class Meta:
