@@ -66,6 +66,11 @@ class ProductListView(ListView):
     model = Product
     extra_context = {'title': 'Главная'}
 
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user_queryset = queryset.filter(is_published=True)
+        return user_queryset
+
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
         context_data['versions'] = Version.objects.filter(is_current_version=True)
@@ -89,6 +94,28 @@ class ProductDeleteView(DeleteView):
     model = Product
     extra_context = {'title': 'Удаление продукта'}
     success_url = reverse_lazy('catalog_app:home')
+
+
+class UserProductListView(ListView):
+    """Класс для отображения списка продуктов автора на странице мои продукты"""
+    model = Product
+    template_name = 'catalog_app/user_product_list.html'
+    extra_context = {'title': 'Мои продукты'}
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user_queryset = queryset.filter(author=self.request.user)
+        return user_queryset
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['published'] = self.object_list.filter(is_published=True)
+        context_data['unpublished'] = self.object_list.filter(is_published=False)
+        context_data['versions'] = Version.objects.filter(is_current_version=True)
+
+        del context_data['object_list']
+
+        return context_data
 
 
 def contact_page(request):

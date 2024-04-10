@@ -1,0 +1,66 @@
+{% extends 'catalog_app/base.html' %}
+{% block content %}
+<div style="overflow-y: auto;">
+    {% include 'catalog_app/includes/inc_menu.html'%}
+    <div class="container">
+        {% if unpublished.count == 0 %}
+        <h6 class="text-center my-5">Неопубликованных продуктов нет</h6>
+        {% else %}
+        <h1 class="text-center my-5">Неопубликованные продукты</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for object in unpublished %}
+            <div class="col">
+                <div class="card">
+                    <img src="/media/{{object.image}}" class="card-img-top" alt="Изображение">
+                    <div class="card-body">
+                        <h5 class="card-title">{{object.name}}</h5>
+                        <p class="card-text">{{object.description}}</p>
+                        <a href="{% url 'catalog_app:product' object.id %}" class="card-link"> Подробнее</a>
+                    </div>
+                    {% for version in versions %}
+                    {% if version.product == object %}
+                    <div class="card-footer">
+                        <small class="text-muted">Текущая версия {{ version }}</small>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="card-footer">
+                        <small class="text-muted">Последнее изменение {{object.last_modified_date}}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% if published.count == 0 %}
+        <h6 class="text-center my-5">Опубликованных продуктов нет</h6>
+        {% else %}
+        <h1 class="text-center my-5">Опубликованные продукты</h1>
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            {% for object in published %}
+            <div class="col">
+                <div class="card">
+                    <img src="/media/{{object.image}}" class="card-img-top" alt="Изображение">
+                    <div class="card-body">
+                        <h5 class="card-title">{{object.name}}</h5>
+                        <p class="card-text">{{object.description}}</p>
+                        <a href="{% url 'catalog_app:product' object.id %}" class="card-link"> Подробнее</a>
+                    </div>
+                    {% for version in versions %}
+                    {% if version.product == object %}
+                    <div class="card-footer">
+                        <small class="text-muted">Текущая версия {{ version }}</small>
+                    </div>
+                    {% endif %}
+                    {% endfor %}
+                    <div class="card-footer">
+                        <small class="text-muted">Последнее изменение {{object.last_modified_date}}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
