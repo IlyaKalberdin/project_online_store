@@ -3,16 +3,18 @@ from django.urls import reverse_lazy
 from pytils.translit import slugify
 from blog_app.models import Blog
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 
 
 EMAIL_TO = ['ilyakalberdin@gmail.com']
 
 
-class BlogCreateView(CreateView):
+class BlogCreateView(PermissionRequiredMixin, CreateView):
     model = Blog
     fields = ('title', 'text', 'image', 'is_published')
     extra_context = {'title': 'Создание статьи'}
     success_url = reverse_lazy('blog_app:blog_list')
+    permission_required = 'blog_app.add_blog'
 
     def form_valid(self, form):
         new_blog = form.save(commit=False)
@@ -22,10 +24,11 @@ class BlogCreateView(CreateView):
         return super().form_valid(form)
 
 
-class BlogUpdateView(UpdateView):
+class BlogUpdateView(PermissionRequiredMixin, UpdateView):
     model = Blog
     fields = ('title', 'text', 'image')
-    extra_context = {'title': 'Создание статьи'}
+    extra_context = {'title': 'Изменение статьи'}
+    permission_required = 'blog_app.change_blog'
 
     def form_valid(self, form):
         new_blog = form.save(commit=False)
@@ -61,7 +64,8 @@ class BlogDetailView(DetailView):
         return self.object
 
 
-class BlogDeleteView(DeleteView):
+class BlogDeleteView(PermissionRequiredMixin, DeleteView):
     model = Blog
     extra_context = {'title': 'Удаление продукта'}
     success_url = reverse_lazy('blog_app:blog_list')
+    permission_required = 'blog_app.delete_blog'

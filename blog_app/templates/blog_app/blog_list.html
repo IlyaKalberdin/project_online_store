@@ -23,7 +23,7 @@
                 </div>
             </div>
             {% endfor %}
-            {% if user.is_authenticated %}
+            {% if perms.blog_app.add_blog %}
             <div class="col">
                 <div class="card">
                     <div class="card-body">
