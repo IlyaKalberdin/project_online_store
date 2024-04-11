@@ -1,14 +1,13 @@
-from django.contrib.auth.views import LoginView, LogoutView
+from django.contrib.auth.views import LogoutView
 from users_app.views import (RegistrationView, ResetPasswordEnter, ResetPasswordConfirm, ResetPasswordUpdate,
-                             UserUpdateView, confirm_email)
+                             UserUpdateView, confirm_email, UserLoginView)
 from django.urls import path
 from users_app.apps import UsersAppConfig
 
 app_name = UsersAppConfig.name
 
 urlpatterns = [
-    path('login/', LoginView.as_view(template_name='users_app/login.html', extra_context={'title': 'Вход'}),
-         name='login'),
+    path('login/', UserLoginView.as_view(), name='login'),
     path('logout/', LogoutView.as_view(), name='logout'),
     path('registration/', RegistrationView.as_view(), name='registration'),
     path('registration/confirm_email/<user_email>', confirm_email, name='confirm_email'),

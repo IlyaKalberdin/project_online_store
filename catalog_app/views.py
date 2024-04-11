@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -38,10 +39,9 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(AuthorLoginRequiredMixin, UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Класс для редактирования продукта"""
     model = Product
-    form_class = ProductForm
     extra_context = {'title': 'Редактирование продукта',
                      'categories': Category.objects.all()}
 
@@ -56,6 +56,19 @@ class ProductUpdateView(AuthorLoginRequiredMixin, UpdateView):
 
         return context_data
 
+    def get_form_class(self):
+        user = self.request.user
+
+        if user == self.object.author:
+            self.form_class = ProductForm
+        elif (user.has_perm('catalog_app.cancel_published') and user.has_perm('catalog_app.change_description')
+                and user.has_perm('catalog_app.change_category')):
+            self.form_class = ModeratorProductForm
+        else:
+            raise PermissionDenied
+
+        return super().get_form_class()
+
     def form_valid(self, form):
         update_product = form.save(commit=False)
         update_product.last_modified_date = datetime.now()
@@ -69,24 +82,6 @@ class ProductUpdateView(AuthorLoginRequiredMixin, UpdateView):
             formset.save()
         else:
             return self.render_to_response(self.get_context_data(form=form))
-
-        return super().form_valid(form)
-
-
-class ModeratorProductUpdateView(PermissionRequiredMixin, UpdateView):
-    """Класс для редактирования продукта модератором"""
-    model = Product
-    form_class = ModeratorProductForm
-    extra_context = {'title': 'Редактирование продукта',
-                     'categories': Category.objects.all()}
-    permission_required = ('catalog_app.cancel_published', 'catalog_app.change_description',
-                           'catalog_app.change_category')
-
-    def form_valid(self, form):
-        update_product = form.save(commit=False)
-        update_product.last_modified_date = datetime.now()
-
-        update_product.save()
 
         return super().form_valid(form)
 

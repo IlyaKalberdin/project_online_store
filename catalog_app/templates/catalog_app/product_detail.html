@@ -23,7 +23,7 @@
             <a href="{% url 'catalog_app:delete_product' object.id %}" type="button" class="btn btn-danger">Удалить</a>
         </div>
         {% elif perms.catalog_app.cancel_published and perms.catalog_app.change_description and perms.catalog_app.change_category  %}
-            <a href="{% url 'catalog_app:moderator_update_product' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
+            <a href="{% url 'catalog_app:update_product' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
         {% endif %}
     </div>
 </div>

@@ -8,6 +8,7 @@ from users_app.forms import (UserRegistrationForm, UserResetPasswordEnter, UserR
 from users_app.models import User
 from random import randint
 from django import forms
+from django.contrib.auth.views import LoginView
 
 
 class RegistrationView(CreateView):
@@ -21,7 +22,7 @@ class RegistrationView(CreateView):
     extra_context = {'title': 'Регистрация'}
 
     def form_valid(self, form):
-        user = form.save(commit=False)
+        user = form.save()
 
         code = ''.join([str(randint(0, 9)) for i in range(6)])
         send_mail(
@@ -34,6 +35,29 @@ class RegistrationView(CreateView):
         self.request.session['code'] = code
 
         return redirect('users_app:confirm_email', user)
+
+
+class UserLoginView(LoginView):
+    template_name = 'users_app/login.html'
+    extra_context = {'title': 'Вход'}
+
+    def form_valid(self, form):
+        user = form.get_user()
+
+        if not user.is_confirmed_email:
+            code = ''.join([str(randint(0, 9)) for i in range(6)])
+            send_mail(
+                'Подтверждение почты',
+                f'Для подтверждения почты введи следующий код {code}',
+                EMAIL_HOST_USER,
+                [user.email]
+            )
+
+            self.request.session['code'] = code
+
+            return redirect('users_app:confirm_email', user)
+
+        return super().form_valid(form)
 
 
 class UserUpdateView(UpdateView):
@@ -115,6 +139,7 @@ def confirm_email(request, user_email):
     Функция для подтверждения почты пользователя
     """
     user = User.objects.get(email=user_email)
+
     context = {'title': 'Подтверждение почты',
                'user_email': user}
 
