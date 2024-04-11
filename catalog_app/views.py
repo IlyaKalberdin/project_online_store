@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -7,10 +7,21 @@ from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 
-from users_app.models import User
+
+class AuthorLoginRequiredMixin(LoginRequiredMixin):
+    """ Класс-миксин, проверяющий является ли пользователь автором статьи и
+        авторизован ли он"""
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        product = Product.objects.get(id=pk)
+
+        if request.user == product.author:
+            return super().dispatch(request, *args, **kwargs)
+
+        return self.handle_no_permission()
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Класс для создания продукта"""
     model = Product
     form_class = ProductForm
@@ -27,7 +38,7 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(AuthorLoginRequiredMixin, UpdateView):
     """Класс для редактирования продукта"""
     model = Product
     form_class = ProductForm
@@ -109,7 +120,7 @@ class ProductDetailView(DetailView):
         return context_data
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(AuthorLoginRequiredMixin, DeleteView):
     model = Product
     extra_context = {'title': 'Удаление продукта'}
     success_url = reverse_lazy('catalog_app:home')
