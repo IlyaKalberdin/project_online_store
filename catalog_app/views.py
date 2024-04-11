@@ -7,6 +7,7 @@ from catalog_app.forms import ProductForm, VersionForm, VersionFormSet, Moderato
 from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
+from catalog_app.serviced import category_cache_example
 
 
 class AuthorLoginRequiredMixin(LoginRequiredMixin):
@@ -27,7 +28,7 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     extra_context = {'title': 'Создание продукта',
-                     'categories': Category.objects.all()}
+                     'categories': category_cache_example()}
 
     def form_valid(self, form):
         new_product = form.save(commit=False)
@@ -43,7 +44,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     """Класс для редактирования продукта"""
     model = Product
     extra_context = {'title': 'Редактирование продукта',
-                     'categories': Category.objects.all()}
+                     'categories': category_cache_example()}
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
