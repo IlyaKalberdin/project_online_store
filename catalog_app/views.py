@@ -1,15 +1,27 @@
+from django.contrib.auth.mixins import PermissionRequiredMixin, LoginRequiredMixin
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
-from catalog_app.forms import ProductForm, VersionForm, VersionFormSet
+from catalog_app.forms import ProductForm, VersionForm, VersionFormSet, ModeratorProductForm
 from catalog_app.models import Product, Category, Contact, Version
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from datetime import datetime
 
-from users_app.models import User
+
+class AuthorLoginRequiredMixin(LoginRequiredMixin):
+    """ Класс-миксин, проверяющий является ли пользователь автором статьи и
+        авторизован ли он"""
+    def dispatch(self, request, *args, **kwargs):
+        pk = kwargs['pk']
+        product = Product.objects.get(id=pk)
+
+        if request.user == product.author:
+            return super().dispatch(request, *args, **kwargs)
+
+        return self.handle_no_permission()
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     """Класс для создания продукта"""
     model = Product
     form_class = ProductForm
@@ -26,7 +38,7 @@ class ProductCreateView(CreateView):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(AuthorLoginRequiredMixin, UpdateView):
     """Класс для редактирования продукта"""
     model = Product
     form_class = ProductForm
@@ -61,10 +73,33 @@ class ProductUpdateView(UpdateView):
         return super().form_valid(form)
 
 
+class ModeratorProductUpdateView(PermissionRequiredMixin, UpdateView):
+    """Класс для редактирования продукта модератором"""
+    model = Product
+    form_class = ModeratorProductForm
+    extra_context = {'title': 'Редактирование продукта',
+                     'categories': Category.objects.all()}
+    permission_required = ('catalog_app.cancel_published', 'catalog_app.change_description',
+                           'catalog_app.change_category')
+
+    def form_valid(self, form):
+        update_product = form.save(commit=False)
+        update_product.last_modified_date = datetime.now()
+
+        update_product.save()
+
+        return super().form_valid(form)
+
+
 class ProductListView(ListView):
     """Класс для отображения списка продуктов"""
     model = Product
     extra_context = {'title': 'Главная'}
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user_queryset = queryset.filter(is_published=True)
+        return user_queryset
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -85,10 +120,32 @@ class ProductDetailView(DetailView):
         return context_data
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(AuthorLoginRequiredMixin, DeleteView):
     model = Product
     extra_context = {'title': 'Удаление продукта'}
     success_url = reverse_lazy('catalog_app:home')
+
+
+class UserProductListView(ListView):
+    """Класс для отображения списка продуктов автора на странице мои продукты"""
+    model = Product
+    template_name = 'catalog_app/user_product_list.html'
+    extra_context = {'title': 'Мои продукты'}
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        user_queryset = queryset.filter(author=self.request.user)
+        return user_queryset
+
+    def get_context_data(self, **kwargs):
+        context_data = super().get_context_data(**kwargs)
+        context_data['published'] = self.object_list.filter(is_published=True)
+        context_data['unpublished'] = self.object_list.filter(is_published=False)
+        context_data['versions'] = Version.objects.filter(is_current_version=True)
+
+        del context_data['object_list']
+
+        return context_data
 
 
 def contact_page(request):

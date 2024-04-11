@@ -15,6 +15,7 @@ class Product(models.Model):
     creation_date = models.DateField(verbose_name='дата создания')
     last_modified_date = models.DateField(verbose_name='дата последнего изменения')
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='автор')
+    is_published = models.BooleanField(default=False, verbose_name='опубликовано ли')
 
     def __str__(self):
         # Строковое отображение объекта
@@ -27,6 +28,20 @@ class Product(models.Model):
     class Meta:
         verbose_name = 'продукт'
         verbose_name_plural = 'продукты'
+        permissions = [
+            (
+                'cancel_published',
+                'Может отменять публикацию'
+            ),
+            (
+                'change_description',
+                'Может менять описание'
+            ),
+            (
+                'change_category',
+                'Может менять категорию'
+            )
+        ]
 
 
 class Category(models.Model):

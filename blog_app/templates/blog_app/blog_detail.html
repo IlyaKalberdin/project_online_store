@@ -12,10 +12,12 @@
             <li class="list-group-item">Количество просмотров: {{object.count_views}}</li>
             <li class="list-group-item">Дата создания: {{object.creation_date}}</li>
         </ul>
+        {% if perms.blog_app.change_blog and perms.blog_app.delete_blog %}
         <div class="card-body">
             <a href="{% url 'blog_app:update_blog' object.id %}" type="button" class="btn btn-primary">Редактировать</a>
             <a href="{% url 'blog_app:delete_blog' object.id %}" type="button" class="btn btn-danger">Удалить</a>
         </div>
+        {% endif %}
     </div>
 </div>
 {% endblock %}
