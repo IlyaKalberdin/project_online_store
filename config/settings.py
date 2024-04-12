@@ -11,11 +11,16 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
 from pathlib import Path
-from os import getenv
+from os import path, getenv
+from dotenv import load_dotenv
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+
+
+dot_env = path.join(BASE_DIR / '.env')
+load_dotenv(dotenv_path=dot_env)
 
 
 # Quick-start development settings - unsuitable for production
@@ -81,10 +86,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'online_store_db',
-        'USER': 'postgres',
-        'PASSWORD': 12345
+        'ENGINE': getenv('ENGINE'),
+        'NAME': getenv('NAME_DB'),
+        'USER': getenv('USER_DB'),
+        'PASSWORD': getenv('PASSWORD')
     }
 }
 
@@ -146,10 +151,10 @@ LOGIN_URL = '/user/login'
 
 # Настройки для электронной почты
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.yandex.ru'
-EMAIL_PORT = 465
-EMAIL_USE_SSL = True
+EMAIL_BACKEND = getenv('EMAIL_BACKEND')
+EMAIL_HOST = getenv('EMAIL_HOST')
+EMAIL_PORT = getenv('EMAIL_PORT')
+EMAIL_USE_SSL = getenv('EMAIL_USE_SSL')
 
 EMAIL_HOST_USER = getenv('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
@@ -157,3 +162,14 @@ EMAIL_HOST_PASSWORD = getenv('EMAIL_HOST_PASSWORD')
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 SERVER_EMAIL = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
+
+
+CACHE_ENABLED = getenv('CACHE_ENABLED')
+
+if CACHE_ENABLED:
+    CASHES = {
+        'default': {
+            'BACKEND': getenv('BACKEND'),
+            'LOCATION': getenv('LOCATION'),
+        }
+    }
